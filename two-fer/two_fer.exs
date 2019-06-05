@@ -7,10 +7,6 @@ defmodule TwoFer do
     "One for #{name}, one for me"
   end
 
-  def two_fer(_name) do
-    raise FunctionClauseError
-  end
-
   def two_fer() do
     two_fer("you")
   end
