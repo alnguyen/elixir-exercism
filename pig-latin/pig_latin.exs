@@ -1,5 +1,5 @@
 defmodule PigLatin do
-  @vowels ["a", "e", "i", "o", "u", "yt", "xr"]
+  @vowels ["a", "e", "i", "o", "u"]
   @two_chars ["ch", "qu", "th"]
   @three_chars ["squ", "thr", "sch"]
   @doc """
@@ -27,13 +27,17 @@ defmodule PigLatin do
   def translate_word(word) do
     cond do
       String.starts_with?(word, @vowels) -> word <> "ay"
-      String.starts_with?(word, @two_chars) -> reword(word, 2)
       String.starts_with?(word, @three_chars) -> reword(word, 3)
-      true ->
-        letters = String.split(word, "", trim: true)
-        idx = Enum.find_index(letters, &Enum.member?(@vowels, &1))
-        reword(word, idx)
+      String.starts_with?(word, @two_chars) -> reword(word, 2)
+      String.starts_with?(word, ["x", "y"]) and !Enum.member?(@vowels, String.at(word, 1)) -> word <> "ay"
+      true -> traverse_letters(word)
     end
+  end
+
+  def traverse_letters(word) do
+    letters = String.split(word, "", trim: true)
+    idx = Enum.find_index(letters, &Enum.member?(@vowels, &1))
+    reword(word, idx)
   end
 
   def reword(word, index) do

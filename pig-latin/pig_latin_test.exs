@@ -103,7 +103,7 @@ defmodule PigLatinTest do
       assert PigLatin.translate("therapy") == "erapythay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with thr" do
       assert PigLatin.translate("thrush") == "ushthray"
     end
@@ -120,7 +120,7 @@ defmodule PigLatinTest do
       assert PigLatin.translate("yttria") == "yttriaay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with y, followed by another consonant" do
       assert PigLatin.translate("yddria") == "yddriaay"
     end
@@ -130,7 +130,7 @@ defmodule PigLatinTest do
       assert PigLatin.translate("xray") == "xrayay"
     end
 
-    @tag :pending
+    # @tag :pending
     test "word beginning with xb" do
       assert PigLatin.translate("xbot") == "xbotay"
     end
