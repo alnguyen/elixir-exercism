@@ -1,6 +1,7 @@
 defmodule PigLatin do
   @vowels ["a", "e", "i", "o", "u", "yt", "xr"]
-  @special_cases ["ch", "qu", "squ", "th", "thr", "sch"]
+  @two_chars ["ch", "qu", "th"]
+  @three_chars ["squ", "thr", "sch"]
   @doc """
   Given a `phrase`, translate it a word at a time to Pig Latin.
 
@@ -20,13 +21,23 @@ defmodule PigLatin do
     phrase
     |> String.split
     |> Enum.map(&translate_word/1)
+    |> Enum.join(" ")
   end
 
-  def translate_word(word) when String.starts_with?(word, @vowels) do
-    word <> "ay"
+  def translate_word(word) do
+    cond do
+      String.starts_with?(word, @vowels) -> word <> "ay"
+      String.starts_with?(word, @two_chars) -> reword(word, 2)
+      String.starts_with?(word, @three_chars) -> reword(word, 3)
+      true ->
+        letters = String.split(word, "", trim: true)
+        idx = Enum.find_index(letters, &Enum.member?(@vowels, &1))
+        reword(word, idx)
+    end
   end
 
-  def translate_word(word) when String.starts_with(word, @special_cases) do
-    
+  def reword(word, index) do
+    {prefix, rest} = String.split_at(word, index)
+    "#{rest}#{prefix}ay"
   end
 end
