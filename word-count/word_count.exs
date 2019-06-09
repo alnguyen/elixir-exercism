@@ -6,21 +6,12 @@ defmodule Words do
   """
   @spec count(String.t()) :: map
   def count(sentence) do
-    String.split(sentence, ~r/(\s|_)/)
-    |> Enum.filter(&String.match?(&1, ~r/\w+/))
+    String.split(sentence, ~r/(\s|_)|(\W+\B)/, trim: true)
     |> Enum.reduce(%{}, &counter/2)
   end
 
-  def counter(string, acc) do
-    lowercased =
-      String.downcase(string)
-      |> String.replace(~r/(\W+\B)/, "", global: true)
-    case Map.has_key?(acc, lowercased) do
-      true ->
-        current_count = Map.get(acc, lowercased)
-        Map.put(acc, lowercased, current_count + 1)
-      false ->
-        Map.put(acc, lowercased, 1)
-    end
+  defp counter(string, acc) do
+    lowercased = String.downcase(string)
+    Map.update(acc, lowercased, 1, &(&1 + 1))
   end
 end
